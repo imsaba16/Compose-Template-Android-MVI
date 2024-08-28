@@ -1,0 +1,1 @@
+Jetpack Compose Base App Written in Kotlin with MVI Architectural Pattern. This Template includes Retrofit, Hilt, AndroidX libraries.
