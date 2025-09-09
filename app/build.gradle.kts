@@ -1,19 +1,20 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx)
 }
 
 android {
     namespace = "com.example.baseapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.baseapp"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -33,17 +34,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        buildConfig = true
     }
     packaging {
         resources {
@@ -63,23 +64,22 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.datastore.preferences)
 
-    implementation (libs.retrofit)
-    implementation (libs.logging.interceptor)
-    implementation(libs.converter.moshi)
-    implementation(libs.moshi.kotlin)
-    ksp(libs.moshi.kotlin.codegen)
+    //Koin
+    implementation(libs.koin.androidx.compose)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
+    //Ktor
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     //kotlin coroutines
-    implementation (libs.kotlinx.coroutines.android)
-    implementation (libs.androidx.lifecycle.extensions)
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
-    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
